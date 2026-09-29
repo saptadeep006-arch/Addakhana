@@ -1,0 +1,674 @@
+/* =====================================================
+   BASIC RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+    min-height: 100vh;
+    width: 100%;
+
+    font-family: Arial, sans-serif;
+
+    position: relative;
+
+    overflow: hidden;
+
+    color: white;
+}
+
+
+/* =====================================================
+   BACKGROUND VIDEO
+===================================================== */
+
+.bg-video {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    z-index: -2;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   DARK OVERLAY
+===================================================== */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+.page-title {
+    width: 100%;
+
+    text-align: center;
+
+    padding-top: 25px;
+}
+
+
+.page-title h1 {
+    display: inline-block;
+
+    color: white;
+
+    background: rgba(220, 0, 0, 0.88);
+
+    padding: 12px 35px;
+
+    border-radius: 0 0 20px 20px;
+
+    font-size: clamp(28px, 5vw, 55px);
+
+    text-shadow:
+        2px 2px 4px black,
+        0 0 10px #ffd700;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =====================================================
+   MUSIC BUTTON
+===================================================== */
+
+.music-button {
+    position: absolute;
+
+    left: 50%;
+    bottom: 90px;
+
+    transform: translateX(-50%);
+
+    width: min(90%, 600px);
+
+    text-align: center;
+}
+
+
+.music-button a {
+    display: block;
+
+    width: 100%;
+
+    padding: 17px;
+
+    background: rgba(255, 165, 0, 0.92);
+
+    border-radius: 20px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: clamp(18px, 4vw, 25px);
+
+    font-weight: bold;
+
+    text-shadow: 1px 1px 3px black;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(255, 215, 0, 0.5);
+
+    backdrop-filter: blur(5px);
+
+    transition: 0.3s;
+}
+
+
+.music-button a:hover {
+    color: #fff700;
+
+    transform: translateY(-4px);
+}
+
+
+/* =====================================================
+   SPOTIFY PLAYLIST
+   POSITIONED ABOVE BOTTOM NAVIGATION
+===================================================== */
+
+.spotify-container {
+    position: fixed;
+
+    left: 50%;
+
+    /*
+       IMPORTANT:
+       Keep the Spotify player above
+       the bottom navigation.
+    */
+
+    bottom: 105px;
+
+    transform: translateX(-50%);
+
+    width: min(92%, 700px);
+
+    padding: 8px;
+
+    background: rgba(0, 0, 0, 0.60);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 20;
+}
+
+
+/* Spotify iframe */
+
+.spotify-container iframe {
+    display: block;
+
+    width: 100%;
+
+    height: 152px;
+
+    border: 0;
+
+    border-radius: 12px;
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-navigation {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 15px;
+
+    transform: translateX(-50%);
+
+    width: min(92%, 600px);
+
+    display: flex;
+
+    gap: 10px;
+
+    z-index: 30;
+}
+
+
+/* =====================================================
+   NAVIGATION BOX
+===================================================== */
+
+.nav-box {
+    flex: 1;
+
+    min-width: 0;
+
+    text-align: center;
+
+    background: rgba(221, 0, 102, 0.95);
+
+    padding: 15px 8px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.4);
+
+    transition: 0.3s;
+}
+
+
+/* =====================================================
+   NAVIGATION LINK
+===================================================== */
+
+.nav-box a {
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: clamp(13px, 3vw, 18px);
+
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   NAVIGATION HOVER
+===================================================== */
+
+.nav-box:hover {
+    transform: translateY(-4px);
+
+    background: rgba(180, 0, 80, 0.95);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =====================================================
+   ACTIVE NAVIGATION
+===================================================== */
+
+.nav-box.active {
+    background: rgba(255, 140, 0, 0.95);
+}
+
+
+.nav-box.active:hover {
+    background: rgba(255, 110, 0, 0.95);
+}
+
+
+/* =====================================================
+   COMING SOON
+===================================================== */
+
+.coming-soon {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(90%, 600px);
+
+    text-align: center;
+
+    padding: 30px 20px;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(7px);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+
+.coming-soon h2 {
+    color: white;
+
+    font-size: clamp(30px, 7vw, 50px);
+
+    margin-bottom: 15px;
+
+    text-shadow:
+        2px 2px 5px black,
+        0 0 10px #ffd700;
+}
+
+
+.coming-soon p {
+    color: white;
+
+    font-size: clamp(15px, 3vw, 20px);
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   TABLET / MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------
+       PAGE TITLE
+    ----------------------------- */
+
+    .page-title {
+        padding-top: 15px;
+    }
+
+
+    .page-title h1 {
+        padding: 10px 25px;
+
+        border-radius: 0 0 15px 15px;
+
+        font-size: 30px;
+    }
+
+
+    /* -----------------------------
+       MUSIC BUTTON
+    ----------------------------- */
+
+    .music-button {
+        width: 92%;
+
+        bottom: 85px;
+    }
+
+
+    .music-button a {
+        padding: 14px;
+
+        font-size: 18px;
+    }
+
+
+    /* -----------------------------
+       SPOTIFY
+    ----------------------------- */
+
+    .spotify-container {
+        width: 92%;
+
+        /*
+           Keep enough distance from
+           bottom navigation.
+        */
+
+        bottom: 105px;
+
+        padding: 6px;
+
+        border-radius: 15px;
+    }
+
+
+    .spotify-container iframe {
+        width: 100%;
+
+        height: 152px;
+
+        border-radius: 10px;
+    }
+
+
+    /* -----------------------------
+       BOTTOM NAVIGATION
+    ----------------------------- */
+
+    .bottom-navigation {
+        width: 94%;
+
+        bottom: 12px;
+
+        gap: 6px;
+    }
+
+
+    .nav-box {
+        padding: 13px 5px;
+
+        border-radius: 10px;
+    }
+
+
+    .nav-box a {
+        font-size: 13px;
+
+        white-space: nowrap;
+    }
+
+
+    /* -----------------------------
+       COMING SOON
+    ----------------------------- */
+
+    .coming-soon {
+        width: 90%;
+
+        padding: 25px 15px;
+    }
+
+
+    .coming-soon h2 {
+        font-size: 32px;
+    }
+
+
+    .coming-soon p {
+        font-size: 16px;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 380px) {
+
+    /* -----------------------------
+       PAGE TITLE
+    ----------------------------- */
+
+    .page-title h1 {
+        font-size: 26px;
+
+        padding: 9px 20px;
+    }
+
+
+    /* -----------------------------
+       MUSIC BUTTON
+    ----------------------------- */
+
+    .music-button {
+        width: 95%;
+
+        bottom: 82px;
+    }
+
+
+    .music-button a {
+        padding: 12px;
+
+        font-size: 16px;
+    }
+
+
+    /* -----------------------------
+       SPOTIFY
+    ----------------------------- */
+
+    .spotify-container {
+        width: 94%;
+
+        bottom: 100px;
+
+        padding: 5px;
+    }
+
+
+    .spotify-container iframe {
+        height: 152px;
+    }
+
+
+    /* -----------------------------
+       BOTTOM NAVIGATION
+    ----------------------------- */
+
+    .bottom-navigation {
+        width: 95%;
+
+        bottom: 10px;
+
+        gap: 4px;
+    }
+
+
+    .nav-box {
+        padding: 11px 3px;
+
+        border-radius: 9px;
+    }
+
+
+    .nav-box a {
+        font-size: 11px;
+
+        white-space: nowrap;
+    }
+
+
+    /* -----------------------------
+       COMING SOON
+    ----------------------------- */
+
+    .coming-soon {
+        width: 92%;
+    }
+
+
+    .coming-soon h2 {
+        font-size: 27px;
+    }
+
+
+    .coming-soon p {
+        font-size: 14px;
+    }
+}
+
+
+/* =====================================================
+   LANDSCAPE MOBILE
+===================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    /* -----------------------------
+       PAGE TITLE
+    ----------------------------- */
+
+    .page-title {
+        padding-top: 5px;
+    }
+
+
+    .page-title h1 {
+        font-size: 24px;
+
+        padding: 6px 20px;
+    }
+
+
+    /* -----------------------------
+       MUSIC BUTTON
+    ----------------------------- */
+
+    .music-button {
+        bottom: 65px;
+    }
+
+
+    .music-button a {
+        padding: 8px;
+
+        font-size: 15px;
+    }
+
+
+    /* -----------------------------
+       SPOTIFY
+    ----------------------------- */
+
+    .spotify-container {
+        bottom: 75px;
+
+        width: min(80%, 600px);
+
+        padding: 5px;
+    }
+
+
+    .spotify-container iframe {
+        height: 110px;
+    }
+
+
+    /* -----------------------------
+       BOTTOM NAVIGATION
+    ----------------------------- */
+
+    .bottom-navigation {
+        bottom: 5px;
+
+        width: 85%;
+
+        gap: 5px;
+    }
+
+
+    .nav-box {
+        padding: 7px 4px;
+    }
+
+
+    .nav-box a {
+        font-size: 11px;
+    }
+
+
+    /* -----------------------------
+       COMING SOON
+    ----------------------------- */
+
+    .coming-soon {
+        width: 80%;
+    }
+}
