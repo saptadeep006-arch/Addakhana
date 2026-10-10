@@ -2,115 +2,73 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Addakhana - Music Player</title>
 
-    <!-- Common CSS -->
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 
 <body>
 
+    <!-- Background video -->
 
-    <!-- =================================
-         BACKGROUND VIDEO
-    ================================== -->
+    <video class="bg-video"
+           autoplay
+           muted
+           loop
+           playsinline
+           preload="auto">
 
-    <video
-        class="bg-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-    >
-
-        <source
-            src="subhodurgapuja.mp4"
-            type="video/mp4"
-        >
-
-        Your browser does not support the video tag.
+        <source src="subhodurgapuja1.mp4"
+                type="video/mp4">
 
     </video>
 
 
-    <!-- =================================
-         DURGA PUJA TITLE
-    ================================== -->
+    <!-- Website title -->
 
-    <div class="page-title">
+    <header class="page-title">
 
-        <h1 id="home">
-            Addakhana
-        </h1>
+        <h1 id="home">Addakhana</h1>
 
-    </div>
+    </header>
 
 
-    <!-- =================================
-         SPOTIFY MUSIC PLAYER
-    ================================== -->
+    <!-- Spotify music player -->
 
-    <div class="spotify-container">
+    <main class="spotify-container">
 
         <iframe
-            src="https://open.spotify.com/embed/playlist/663nV4dZM6p8n5UTsGlmuw?si=haDkQjvtTFmjHuUPOO1N2Q&amp;utm_source=copy-link&amp;pi=iarhlx1QQgmNW"
+            src="https://open.spotify.com/embed/playlist/663nV4dZM6p8n5UTsGlmuw"
+            title="Addakhana Music Playlist"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy">
         </iframe>
 
-    </div>
+    </main>
 
 
-    <!-- =================================
-         BOTTOM NAVIGATION
-    ================================== -->
+    <!-- Bottom navigation -->
 
-    <div class="bottom-navigation">
-
-
-        <!-- HOME -->
+    <nav class="bottom-navigation">
 
         <div class="nav-box">
-
-            <a href="index.html">
-                HOME
-            </a>
-
+            <a href="index.html">HOME</a>
         </div>
-
-
-        <!-- CURRENT PAGE -->
 
         <div class="nav-box active">
-
-            <a href="#home">
-                🎵 Music Player →
-            </a>
-
+            <a href="#home">🎵 MUSIC PLAYER</a>
         </div>
-
-
-        <!-- MAHALAYA -->
 
         <div class="nav-box">
-
-            <a href="mahalaya.html">
-                মহালয়া
-            </a>
-
+            <a href="mahalaya.html">মহালয়া</a>
         </div>
 
-
-    </div>
-
+    </nav>
 
 </body>
 
