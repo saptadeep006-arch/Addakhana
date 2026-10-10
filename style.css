@@ -1,6 +1,6 @@
-/* =====================================================
-   BASIC RESET
-===================================================== */
+/* =========================================
+   1. BASIC RESET
+========================================= */
 
 * {
     margin: 0;
@@ -8,34 +8,36 @@
     box-sizing: border-box;
 }
 
-
-/* =====================================================
-   BODY
-===================================================== */
+html {
+    min-height: 100%;
+}
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
 
     font-family: Arial, sans-serif;
+    color: white;
 
     position: relative;
+    isolation: isolate;
 
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 
-    color: white;
+    background: #111;
 }
 
 
-/* =====================================================
-   BACKGROUND VIDEO
-===================================================== */
+/* =========================================
+   2. BACKGROUND VIDEO
+========================================= */
 
 .bg-video {
     position: fixed;
 
-    top: 0;
-    left: 0;
+    inset: 0;
 
     width: 100%;
     height: 100%;
@@ -49,20 +51,16 @@ body {
 }
 
 
-/* =====================================================
-   DARK OVERLAY
-===================================================== */
+/* =========================================
+   3. DARK OVERLAY
+========================================= */
 
 body::before {
     content: "";
 
     position: fixed;
 
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
+    inset: 0;
 
     background: rgba(0, 0, 0, 0.35);
 
@@ -72,18 +70,17 @@ body::before {
 }
 
 
-/* =====================================================
-   PAGE TITLE
-===================================================== */
+/* =========================================
+   4. PAGE TITLE
+========================================= */
 
 .page-title {
     width: 100%;
 
     text-align: center;
 
-    padding-top: 25px;
+    padding: 20px 12px 0;
 }
-
 
 .page-title h1 {
     display: inline-block;
@@ -96,7 +93,9 @@ body::before {
 
     border-radius: 0 0 20px 20px;
 
-    font-size: clamp(28px, 5vw, 55px);
+    font-size: clamp(28px, 4vw, 55px);
+
+    overflow-wrap: anywhere;
 
     text-shadow:
         2px 2px 4px black,
@@ -107,23 +106,24 @@ body::before {
 }
 
 
-/* =====================================================
-   MUSIC BUTTON
-===================================================== */
+/* =========================================
+   5. MUSIC BUTTON ON HOME PAGE
+========================================= */
 
 .music-button {
-    position: absolute;
+    position: fixed;
 
     left: 50%;
-    bottom: 90px;
+    bottom: 110px;
 
     transform: translateX(-50%);
 
     width: min(90%, 600px);
 
     text-align: center;
-}
 
+    z-index: 5;
+}
 
 .music-button a {
     display: block;
@@ -140,7 +140,7 @@ body::before {
 
     text-decoration: none;
 
-    font-size: clamp(18px, 4vw, 25px);
+    font-size: clamp(18px, 2vw, 25px);
 
     font-weight: bold;
 
@@ -152,42 +152,32 @@ body::before {
 
     backdrop-filter: blur(5px);
 
-    transition: 0.3s;
+    transition: background 0.3s ease;
 }
-
 
 .music-button a:hover {
-    color: #fff700;
-
-    transform: translateY(-4px);
+    background: rgba(255, 120, 0, 0.96);
 }
 
 
-/* =====================================================
-   SPOTIFY PLAYLIST
-   POSITIONED ABOVE BOTTOM NAVIGATION
-===================================================== */
+/* =========================================
+   6. RESPONSIVE SPOTIFY CONTAINER
+
+   Used by songs.html and mahalaya.html
+========================================= */
 
 .spotify-container {
-    position: fixed;
+    position: relative;
 
-    left: 50%;
+    width: min(92%, 850px);
 
-    /*
-       IMPORTANT:
-       Keep the Spotify player above
-       the bottom navigation.
-    */
+    margin: clamp(35px, 7vh, 75px) auto 0;
 
-    bottom: 105px;
+    padding: 10px;
 
-    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.65);
 
-    width: min(92%, 700px);
-
-    padding: 8px;
-
-    background: rgba(0, 0, 0, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 
     border-radius: 18px;
 
@@ -197,7 +187,7 @@ body::before {
 
     backdrop-filter: blur(6px);
 
-    z-index: 20;
+    z-index: 1;
 }
 
 
@@ -208,131 +198,126 @@ body::before {
 
     width: 100%;
 
-    height: 152px;
+    height: clamp(152px, 24vh, 352px);
 
-    border: 0;
+    border: none;
 
     border-radius: 12px;
 }
 
 
-/* =====================================================
-   BOTTOM NAVIGATION
-===================================================== */
+/* =========================================
+   7. BOTTOM NAVIGATION
+========================================= */
 
 .bottom-navigation {
-    position: fixed;
+    position: relative;
 
-    left: 50%;
+    width: min(92%, 750px);
 
-    bottom: 15px;
-
-    transform: translateX(-50%);
-
-    width: min(92%, 600px);
+    margin: 35px auto 20px;
 
     display: flex;
 
-    gap: 10px;
+    align-items: stretch;
 
-    z-index: 30;
+    justify-content: center;
+
+    gap: 12px;
+
+    z-index: 10;
 }
 
 
-/* =====================================================
-   NAVIGATION BOX
-===================================================== */
+/* =========================================
+   8. NAVIGATION BOXES
+========================================= */
 
 .nav-box {
-    flex: 1;
+    flex: 1 1 0;
 
     min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     text-align: center;
 
     background: rgba(221, 0, 102, 0.95);
 
-    padding: 15px 8px;
+    padding: 15px 10px;
 
     border-radius: 12px;
 
     box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.4);
 
-    transition: 0.3s;
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
 }
 
 
-/* =====================================================
-   NAVIGATION LINK
-===================================================== */
+/* Navigation links */
 
 .nav-box a {
     display: block;
+
+    width: 100%;
 
     color: white;
 
     text-decoration: none;
 
-    font-size: clamp(13px, 3vw, 18px);
+    font-size: clamp(13px, 1.5vw, 18px);
 
     font-weight: bold;
 
-    white-space: nowrap;
+    line-height: 1.4;
 
-    overflow: hidden;
-
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
 }
 
 
-/* =====================================================
-   NAVIGATION HOVER
-===================================================== */
+/* Hover effect */
 
 .nav-box:hover {
-    transform: translateY(-4px);
+    background: rgba(180, 0, 80, 0.98);
 
-    background: rgba(180, 0, 80, 0.95);
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px);
 }
 
 
-/* =====================================================
-   ACTIVE NAVIGATION
-===================================================== */
+/* Active navigation */
 
 .nav-box.active {
-    background: rgba(255, 140, 0, 0.95);
+    background: rgba(255, 140, 0, 0.96);
 }
-
 
 .nav-box.active:hover {
-    background: rgba(255, 110, 0, 0.95);
+    background: rgba(255, 110, 0, 0.98);
 }
 
 
-/* =====================================================
-   COMING SOON
-===================================================== */
+/* =========================================
+   9. COMING SOON / PROFILE CONTENT
+========================================= */
 
 .coming-soon {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
+    position: relative;
 
     width: min(90%, 600px);
+
+    margin: 12vh auto 100px;
 
     text-align: center;
 
     padding: 30px 20px;
 
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.55);
 
     border-radius: 20px;
 
@@ -342,11 +327,10 @@ body::before {
         0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-
 .coming-soon h2 {
     color: white;
 
-    font-size: clamp(30px, 7vw, 50px);
+    font-size: clamp(28px, 5vw, 50px);
 
     margin-bottom: 15px;
 
@@ -355,77 +339,91 @@ body::before {
         0 0 10px #ffd700;
 }
 
-
 .coming-soon p {
     color: white;
 
-    font-size: clamp(15px, 3vw, 20px);
+    font-size: clamp(15px, 2vw, 20px);
 
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 
-/* =====================================================
-   TABLET / MOBILE
-===================================================== */
+/* =========================================
+   10. TABLETS
+========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .page-title {
+        padding-top: 22px;
+    }
+
+    .page-title h1 {
+        font-size: 42px;
+
+        padding: 12px 32px;
+    }
+
+    .spotify-container {
+        width: min(88%, 750px);
+
+        margin-top: 6vh;
+
+        padding: 10px;
+    }
+
+    .spotify-container iframe {
+        height: clamp(180px, 25vh, 280px);
+    }
+
+    .bottom-navigation {
+        width: min(88%, 700px);
+
+        gap: 12px;
+
+        margin-top: 30px;
+    }
+
+    .nav-box {
+        padding: 15px 8px;
+    }
+
+    .nav-box a {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================
+   11. MOBILE PHONES
+========================================= */
 
 @media (max-width: 600px) {
 
-    /* -----------------------------
-       PAGE TITLE
-    ----------------------------- */
-
     .page-title {
-        padding-top: 15px;
+        padding: 12px 10px 0;
     }
-
 
     .page-title h1 {
-        padding: 10px 25px;
+        font-size: clamp(25px, 7vw, 32px);
+
+        padding: 10px 24px;
 
         border-radius: 0 0 15px 15px;
-
-        font-size: 30px;
     }
 
 
-    /* -----------------------------
-       MUSIC BUTTON
-    ----------------------------- */
-
-    .music-button {
-        width: 92%;
-
-        bottom: 85px;
-    }
-
-
-    .music-button a {
-        padding: 14px;
-
-        font-size: 18px;
-    }
-
-
-    /* -----------------------------
-       SPOTIFY
-    ----------------------------- */
+    /* Spotify player */
 
     .spotify-container {
-        width: 92%;
+        width: 94%;
 
-        /*
-           Keep enough distance from
-           bottom navigation.
-        */
-
-        bottom: 105px;
+        margin-top: 5vh;
 
         padding: 6px;
 
-        border-radius: 15px;
+        border-radius: 14px;
     }
-
 
     .spotify-container iframe {
         width: 100%;
@@ -436,48 +434,59 @@ body::before {
     }
 
 
-    /* -----------------------------
-       BOTTOM NAVIGATION
-    ----------------------------- */
+    /* Bottom navigation */
 
     .bottom-navigation {
         width: 94%;
 
-        bottom: 12px;
+        gap: 7px;
 
-        gap: 6px;
+        margin-top: 25px;
+
+        margin-bottom: 18px;
     }
 
-
     .nav-box {
-        padding: 13px 5px;
+        padding: 12px 5px;
 
         border-radius: 10px;
     }
 
-
     .nav-box a {
-        font-size: 13px;
+        font-size: clamp(11px, 3vw, 14px);
 
-        white-space: nowrap;
+        line-height: 1.35;
     }
 
 
-    /* -----------------------------
-       COMING SOON
-    ----------------------------- */
+    /* Home page music button */
+
+    .music-button {
+        width: 92%;
+
+        bottom: 90px;
+    }
+
+    .music-button a {
+        padding: 14px;
+
+        font-size: 18px;
+    }
+
+
+    /* Coming soon */
 
     .coming-soon {
         width: 90%;
 
+        margin-top: 12vh;
+
         padding: 25px 15px;
     }
-
 
     .coming-soon h2 {
         font-size: 32px;
     }
-
 
     .coming-soon p {
         font-size: 16px;
@@ -485,15 +494,11 @@ body::before {
 }
 
 
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
+/* =========================================
+   12. SMALL MOBILE PHONES
+========================================= */
 
 @media (max-width: 380px) {
-
-    /* -----------------------------
-       PAGE TITLE
-    ----------------------------- */
 
     .page-title h1 {
         font-size: 26px;
@@ -501,55 +506,25 @@ body::before {
         padding: 9px 20px;
     }
 
-
-    /* -----------------------------
-       MUSIC BUTTON
-    ----------------------------- */
-
-    .music-button {
+    .spotify-container {
         width: 95%;
 
-        bottom: 82px;
-    }
-
-
-    .music-button a {
-        padding: 12px;
-
-        font-size: 16px;
-    }
-
-
-    /* -----------------------------
-       SPOTIFY
-    ----------------------------- */
-
-    .spotify-container {
-        width: 94%;
-
-        bottom: 100px;
+        margin-top: 4vh;
 
         padding: 5px;
     }
-
 
     .spotify-container iframe {
         height: 152px;
     }
 
-
-    /* -----------------------------
-       BOTTOM NAVIGATION
-    ----------------------------- */
-
     .bottom-navigation {
-        width: 95%;
+        width: 96%;
 
-        bottom: 10px;
+        gap: 5px;
 
-        gap: 4px;
+        margin-top: 20px;
     }
-
 
     .nav-box {
         padding: 11px 3px;
@@ -557,27 +532,29 @@ body::before {
         border-radius: 9px;
     }
 
-
     .nav-box a {
         font-size: 11px;
-
-        white-space: nowrap;
     }
 
+    .music-button {
+        width: 94%;
 
-    /* -----------------------------
-       COMING SOON
-    ----------------------------- */
+        bottom: 85px;
+    }
+
+    .music-button a {
+        padding: 12px;
+
+        font-size: 16px;
+    }
 
     .coming-soon {
         width: 92%;
     }
 
-
     .coming-soon h2 {
         font-size: 27px;
     }
-
 
     .coming-soon p {
         font-size: 14px;
@@ -585,36 +562,55 @@ body::before {
 }
 
 
-/* =====================================================
-   LANDSCAPE MOBILE
-===================================================== */
+/* =========================================
+   13. LANDSCAPE MOBILE PHONES
+========================================= */
 
 @media (max-height: 500px) and (orientation: landscape) {
-
-    /* -----------------------------
-       PAGE TITLE
-    ----------------------------- */
 
     .page-title {
         padding-top: 5px;
     }
 
-
     .page-title h1 {
-        font-size: 24px;
+        font-size: 25px;
 
         padding: 6px 20px;
     }
 
+    .spotify-container {
+        width: min(80%, 750px);
 
-    /* -----------------------------
-       MUSIC BUTTON
-    ----------------------------- */
+        margin-top: 12px;
 
-    .music-button {
-        bottom: 65px;
+        padding: 5px;
     }
 
+    .spotify-container iframe {
+        height: 110px;
+    }
+
+    .bottom-navigation {
+        width: min(85%, 700px);
+
+        gap: 6px;
+
+        margin-top: 12px;
+
+        margin-bottom: 12px;
+    }
+
+    .nav-box {
+        padding: 7px 5px;
+    }
+
+    .nav-box a {
+        font-size: 12px;
+    }
+
+    .music-button {
+        bottom: 75px;
+    }
 
     .music-button a {
         padding: 8px;
@@ -622,53 +618,57 @@ body::before {
         font-size: 15px;
     }
 
+    .coming-soon {
+        margin-top: 25px;
 
-    /* -----------------------------
-       SPOTIFY
-    ----------------------------- */
+        padding: 18px;
+    }
+}
+
+
+/* =========================================
+   14. LARGE DESKTOP SCREENS
+========================================= */
+
+@media (min-width: 1200px) {
 
     .spotify-container {
-        bottom: 75px;
+        width: min(75%, 900px);
 
-        width: min(80%, 600px);
-
-        padding: 5px;
+        margin-top: 7vh;
     }
-
 
     .spotify-container iframe {
-        height: 110px;
+        height: 250px;
     }
-
-
-    /* -----------------------------
-       BOTTOM NAVIGATION
-    ----------------------------- */
 
     .bottom-navigation {
-        bottom: 5px;
+        width: min(75%, 800px);
 
-        width: 85%;
-
-        gap: 5px;
+        margin-top: 35px;
     }
-
 
     .nav-box {
-        padding: 7px 4px;
+        padding: 17px 12px;
     }
-
 
     .nav-box a {
-        font-size: 11px;
+        font-size: 18px;
     }
+}
 
 
-    /* -----------------------------
-       COMING SOON
-    ----------------------------- */
+/* =========================================
+   15. ACCESSIBILITY
+========================================= */
 
-    .coming-soon {
-        width: 80%;
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition: none !important;
     }
 }
