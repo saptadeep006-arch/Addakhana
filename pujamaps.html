@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Alipurduar Durga Puja Map | Addakhana</title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+        /* BASIC RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff8f0;
+            color: #292323;
+            line-height: 1.5;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #9f1010, #e34b19);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        header h1 {
+            font-size: clamp(25px, 5vw, 38px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        .brand {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 5px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* INTRODUCTION */
+        .intro {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+            text-align: center;
+        }
+
+        .intro h2,
+        .search-section h2,
+        .map-section h2,
+        .directory h2 {
+            color: #a21b1b;
+            margin-bottom: 8px;
+        }
+
+        .intro p,
+        .directory-description {
+            color: #655858;
+            font-size: 14px;
+        }
+
+        /* STATISTICS */
+        .stats {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 17px 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+            border-bottom: 3px solid #df4b1b;
+        }
+
+        .stat-card h3 {
+            font-size: 25px;
+            color: #a21b1b;
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: #665858;
+        }
+
+        /* SEARCH */
+        .search-section {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        #searchInput {
+            flex: 1;
+            min-width: 0;
+            padding: 13px;
+            border: 1px solid #d6b8a5;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        #searchInput:focus {
+            border-color: #c83b1a;
+            box-shadow: 0 0 0 2px rgba(200, 59, 26, 0.12);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #showAllBtn {
+            background: #a21b1b;
+            color: white;
+        }
+
+        #showAllBtn:hover {
+            background: #7d1111;
+        }
+
+        #searchMessage {
+            font-size: 13px;
+            margin-top: 9px;
+            color: #655858;
+        }
+
+        /* MAP */
+        .map-section {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        #map {
+            width: 100%;
+            height: 480px;
+            border-radius: 14px;
+            border: 2px solid #e5c4ae;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .map-note {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #665858;
+        }
+
+        /* CUSTOM RED MARKER */
+        .custom-marker {
+            width: 30px;
+            height: 30px;
+            background: #d71920;
+            border: 3px solid white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .custom-marker::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 8px;
+            left: 8px;
+        }
+
+        /* DIRECTORY */
+        .directory {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .directory-description {
+            margin-bottom: 18px;
+        }
+
+        #pujaList {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .puja-card {
+            background: white;
+            padding: 17px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+            border-left: 4px solid #df4b1b;
+            overflow-wrap: anywhere;
+        }
+
+        .puja-card h3 {
+            color: #9f1717;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .puja-card p {
+            font-size: 13px;
+            color: #655858;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .status-mapped {
+            background: #e0f5e6;
+            color: #17652c;
+        }
+
+        .status-pending {
+            background: #fff0d5;
+            color: #86500a;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .view-map-btn {
+            background: #a21b1b;
+            color: white;
+        }
+
+        .view-map-btn:hover {
+            background: #7d1111;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            color: #655858;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #321818;
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+            margin-top: 35px;
+        }
+
+        footer p {
+            font-size: 13px;
+            margin: 4px 0;
+        }
+
+        footer strong {
+            color: #ffb45f;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 650px) {
+            header {
+                padding: 22px 12px;
+            }
+
+            .stats {
+                gap: 7px;
+            }
+
+            .stat-card {
+                padding: 13px 5px;
+            }
+
+            .stat-card h3 {
+                font-size: 21px;
+            }
+
+            .stat-card p {
+                font-size: 10px;
+            }
+
+            .search-controls {
+                flex-direction: column;
+            }
+
+            #showAllBtn {
+                width: 100%;
+            }
+
+            #map {
+                height: 380px;
+            }
+
+            #pujaList {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="brand">ADDAKHANA</div>
+
+        <h1>🪔 Alipurduar Durga Puja Map</h1>
+
+        <p>
+            Discover Puja pandals across Alipurduar district, West Bengal
+        </p>
+    </header>
+
+    <!-- INTRODUCTION -->
+    <section class="intro">
+        <h2>Explore Durga Puja Near You</h2>
+
+        <p>
+            Explore the listed Durga Puja pandals on the map.
+            Search by pandal name or locality and view their locations.
+        </p>
+    </section>
+
+    <!-- STATISTICS -->
+    <section class="stats">
+
+        <div class="stat-card">
+            <h3 id="totalCount">0</h3>
+            <p>Total Directory Entries</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="mappedCount">0</h3>
+            <p>Entries With Coordinates</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="pendingCount">0</h3>
+            <p>Coordinates Needed</p>
+        </div>
+
+    </section>
+
+    <!-- SEARCH -->
+    <section class="search-section">
+        <h2>🔎 Find a Puja Pandal</h2>
+
+        <div class="search-controls">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search by pandal name or locality..."
+                aria-label="Search Puja pandals"
+            >
+
+            <button id="showAllBtn" type="button">
+                Show All
+            </button>
+        </div>
+
+        <p id="searchMessage" aria-live="polite">
+            Loading directory...
+        </p>
+    </section>
+
+    <!-- MAP -->
+    <section class="map-section">
+        <h2>📍 Interactive Puja Map</h2>
+
+        <div id="map"></div>
+
+        <p class="map-note">
+            Red markers represent entries with coordinates in this dataset.
+            Please verify locations before travelling.
+        </p>
+    </section>
+
+    <!-- DIRECTORY -->
+    <section class="directory">
+        <h2>📋 Puja Pandal Directory</h2>
+
+        <p class="directory-description">
+            Entries without coordinates remain searchable but do not appear
+            as markers on the map.
+        </p>
+
+        <div id="pujaList"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <a href="index2.html"><button>back</button></a>
+        <p><strong>Addakhana</strong> — Celebrating Bengali Culture</p>
+        <p>Durga Puja • Festivals • Culture • Adda</p>
+        <p>Help us improve this directory by confirming pandal locations.</p>
+    </footer>
+
+    <!-- LEAFLET JAVASCRIPT -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        /* =========================================
+           PUJA DATA
+
+           Important: These coordinates have not
+           been independently verified. Check each
+           pandal's actual location before publishing.
+        ========================================= */
+
+        const pujas = [
+            {
+                name: "Engineering Colony Alipurduar Junction",
+                locality: "Alipurduar Junction",
+                lat: 26.52067,
+                lng: 89.53421
+            },
+           /* {
+                name: "Arobinda Colony RYC",
+                locality: "Alipurduar Junction",
+                lat: 26.5237,
+                lng: 89.5335
+            },*/
+            {
+                name: "Netajee Sangha",
+                locality: "Alipurduar district",
+                lat: 26.514945,
+                lng: 89.309503
+            },
+            {
+                name: "Mohila Durga Puja Committee Paschim Kathalbari",
+                locality: "Paschim Kathalbari",
+                lat: 26.498718,
+                lng: 89.294612
+            },
+            {
+                name: "Raichenga Parpatlakhawa Mahila Porichalito Durgotsav Committee",
+                locality: "Raichenga / Parpatlakhawa",
+                lat: 26.514852,
+                lng: 89.270911
+            },
+            {
+                name: "Kashiyabari Durga Puja Committee",
+                locality: "Kashiyabari",
+                lat: 26.491551,
+                lng: 89.346586
+            },
+            {
+                name: "Jora Dighi Sampriti Club",
+                locality: "Alipurduar district",
+                lat: 26.5227,
+                lng: 89.3589
+            },
+            {
+                name: "Ghagra Ashok Club",
+                locality: "Ghagra",
+                lat: 26.508353,
+                lng: 89.511232
+            },
+            {
+                name: "Yuba Sangha Kalibari Colony",
+                locality: "Kalibari Colony",
+                lat: 26.524257,
+                lng: 89.530834
+            },
+            {
+                name: "Nabin Club Durga Puja Mandir",
+                locality: "Alipurduar district",
+                lat: 26.509926,
+                lng: 89.532141
+            },
+            {
+                name: "Jomthek Cultural Club",
+                locality: "Alipurduar district",
+                lat: 26.515513,
+                lng: 89.534244
+            },
+            {
+                name: "Junction Bazaar Durgabari",
+                locality: "Alipurduar Junction",
+                lat: 26.528692,
+                lng: 89.535710
+            },
+            {
+                name: "Bhatri Sangha",
+                locality: "Alipurduar district",
+                lat: 26.488752,
+                lng: 89.526696
+            },
+            {
+                name: "New Town Durgabari Mandir Samiti",
+                locality: "New Town",
+                lat: 26.495155,
+                lng: 89.528622
+            },
+            {
+                name: "Swami Vivekananda Club",
+                locality: "Alipurduar district",
+                lat: 26.482305,
+                lng: 89.521829
+            }
+        ];
+
+        /* MAP INITIALIZATION */
+        const map = L.map("map").setView([26.49, 89.53], 11);
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }
+        ).addTo(map);
+
+        /* CUSTOM RED MARKER */
+        const pujaIcon = L.divIcon({
+            className: "",
+            html: '<div class="custom-marker"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+            popupAnchor: [0, -28]
+        });
+
+        let markers = [];
+
+        /* VALIDATE COORDINATES */
+        function hasValidCoordinates(puja) {
+            return (
+                typeof puja.lat === "number" &&
+                typeof puja.lng === "number" &&
+                Number.isFinite(puja.lat) &&
+                Number.isFinite(puja.lng) &&
+                puja.lat >= -90 &&
+                puja.lat <= 90 &&
+                puja.lng >= -180 &&
+                puja.lng <= 180
+            );
+        }
+
+        /* ESCAPE POPUP TEXT */
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, function (char) {
+                const entities = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                };
+
+                return entities[char];
+            });
+        }
+
+        /* CLEAR EXISTING MARKERS */
+        function clearMarkers() {
+            markers.forEach(function (marker) {
+                map.removeLayer(marker);
+            });
+
+            markers = [];
+        }
+
+        /* DISPLAY MAP MARKERS */
+        function displayMarkers(filteredPujas) {
+            clearMarkers();
+
+            const visibleCoordinates = [];
+
+            filteredPujas.forEach(function (puja) {
+                if (!hasValidCoordinates(puja)) {
+                    return;
+                }
+
+                const marker = L.marker(
+                    [puja.lat, puja.lng],
+                    { icon: pujaIcon }
+                ).addTo(map);
+
+                const popupHTML = `
+                    <div style="min-width:190px">
+                        <h3 style="color:#a21b1b;margin-bottom:6px">
+                            ${escapeHTML(puja.name)}
+                        </h3>
+
+                        <p style="margin-bottom:8px">
+                            <strong>Locality:</strong>
+                            ${escapeHTML(puja.locality)}
+                        </p>
+
+                        <p style="font-size:12px;margin-bottom:0">
+                            Coordinates: ${puja.lat}, ${puja.lng}
+                        </p>
+                    </div>
+                `;
+
+                marker.bindPopup(popupHTML);
+                marker.pujaData = puja;
+
+                markers.push(marker);
+                visibleCoordinates.push([puja.lat, puja.lng]);
+            });
+
+            if (visibleCoordinates.length === 1) {
+                map.setView(visibleCoordinates[0], 15);
+            } else if (visibleCoordinates.length > 1) {
+                map.fitBounds(visibleCoordinates, {
+                    padding: [35, 35],
+                    maxZoom: 14
+                });
+            }
+
+            return visibleCoordinates.length;
+        }
+
+        /* DISPLAY DIRECTORY CARDS */
+        function displayPujaCards(filteredPujas) {
+            const pujaList = document.getElementById("pujaList");
+
+            pujaList.innerHTML = "";
+
+            if (filteredPujas.length === 0) {
+                pujaList.innerHTML = `
+                    <div class="no-results">
+                        <h3>No Puja pandals found</h3>
+                        <p>Try another pandal name or locality.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredPujas.forEach(function (puja) {
+                const mapped = hasValidCoordinates(puja);
+
+                const card = document.createElement("article");
+                card.className = "puja-card";
+
+                const title = document.createElement("h3");
+                title.textContent = "🪔 " + puja.name;
+
+                const locality = document.createElement("p");
+                locality.textContent = "📍 Locality: " + puja.locality;
+
+                const status = document.createElement("span");
+                status.className = mapped
+                    ? "status status-mapped"
+                    : "status status-pending";
+
+                status.textContent = mapped
+                    ? "Coordinates added"
+                    : "Exact coordinates needed";
+
+                const actions = document.createElement("div");
+                actions.className = "card-actions";
+
+                /* VIEW ON MAP BUTTON */
+                if (mapped) {
+                    const viewButton = document.createElement("button");
+
+                    viewButton.type = "button";
+                    viewButton.className = "view-map-btn";
+                    viewButton.textContent = "View on Map";
+
+                    viewButton.addEventListener("click", function () {
+                        map.setView([puja.lat, puja.lng], 16);
+
+                        const marker = markers.find(function (item) {
+                            return item.pujaData === puja;
+                        });
+
+                        if (marker) {
+                            marker.openPopup();
+                        }
+
+                        document.getElementById("map").scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    });
+
+                    actions.appendChild(viewButton);
+                }
+
+                card.appendChild(title);
+                card.appendChild(locality);
+                card.appendChild(status);
+
+                if (mapped) {
+                    card.appendChild(actions);
+                }
+
+                pujaList.appendChild(card);
+            });
+        }
+
+        /* SEARCH PANDALS */
+        function searchPuja() {
+            const searchTerm = document
+                .getElementById("searchInput")
+                .value
+                .trim()
+                .toLowerCase();
+
+            const filteredPujas = pujas.filter(function (puja) {
+                return (
+                    puja.name.toLowerCase().includes(searchTerm) ||
+                    puja.locality.toLowerCase().includes(searchTerm)
+                );
+            });
+
+            const mappedCount = displayMarkers(filteredPujas);
+
+            displayPujaCards(filteredPujas);
+
+            const awaitingCoordinates =
+                filteredPujas.length - mappedCount;
+
+            document.getElementById("searchMessage").textContent =
+                "Showing " + filteredPujas.length +
+                " of " + pujas.length +
+                " entries. " + mappedCount +
+                " mapped; " + awaitingCoordinates +
+                " awaiting coordinates.";
+
+            updateStatistics();
+        }
+
+        /* UPDATE STATISTICS */
+        function updateStatistics() {
+            const mapped = pujas.filter(hasValidCoordinates).length;
+
+            document.getElementById("totalCount").textContent =
+                pujas.length;
+
+            document.getElementById("mappedCount").textContent =
+                mapped;
+
+            document.getElementById("pendingCount").textContent =
+                pujas.length - mapped;
+        }
+
+        /* SHOW ALL PANDALS */
+        function showAllPujas() {
+            document.getElementById("searchInput").value = "";
+
+            searchPuja();
+
+            const allCoordinates = pujas
+                .filter(hasValidCoordinates)
+                .map(function (puja) {
+                    return [puja.lat, puja.lng];
+                });
+
+            if (allCoordinates.length > 1) {
+                map.fitBounds(allCoordinates, {
+                    padding: [35, 35],
+                    maxZoom: 13
+                });
+            } else if (allCoordinates.length === 1) {
+                map.setView(allCoordinates[0], 14);
+            } else {
+                map.setView([26.49, 89.53], 11);
+            }
+        }
+
+        /* EVENT LISTENERS */
+        document
+            .getElementById("searchInput")
+            .addEventListener("input", searchPuja);
+
+        document
+            .getElementById("showAllBtn")
+            .addEventListener("click", showAllPujas);
+
+        /* INITIAL PAGE LOAD */
+        updateStatistics();
+        searchPuja();
+    </script>
+
+</body>
+</html>
